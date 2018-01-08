@@ -1,0 +1,18 @@
+function readdata
+
+    filename = '19-11-17--1355.csv';
+    A = dlmread(filename);
+    
+    mlvol = A(:,1); voltavg = A(:,2);
+    
+    mlinterp = 0:0.1:5;
+    vinterp = spline(mlvol,voltavg);
+    disp('Voltage at prescribed ml level
+    
+    plot(mlvol,voltavg,'ko','markerfacecolor','r'); hold on;
+    plot(mlinterp,ppval(vinterp,mlinterp),'--b');  
+    xlim([0 5]); ylim([0 3.5]);
+    x1 = xlabel('ml'); y1 = ylabel('V');
+    set([x1 y1],'interpreter','latex');
+
+end

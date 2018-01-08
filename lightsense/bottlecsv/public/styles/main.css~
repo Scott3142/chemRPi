@@ -1,0 +1,25 @@
+body {
+	background: black;
+	color: #00BB00;
+	font-family: sans-serif;
+}
+
+.h1 {
+	font-family: sans-serif;
+}
+
+#camera {
+	width: 400px;
+	height: 300px;
+	border: solid 1px black;
+}
+
+table {
+  border-collapse: collapse;
+  border: 2px black solid;
+  font: 12px sans-serif;
+}
+td {
+  border: 1px black solid;
+  padding: 5px;
+}

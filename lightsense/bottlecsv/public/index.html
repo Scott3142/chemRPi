@@ -1,0 +1,70 @@
+<html>
+	<link rel="stylesheet" type="text/css" href="styles/main.css">
+	<script src="scripts/csvtable.js"></script>
+	
+	<body>
+		<div id="headWrapper"><h1>Control Terminal</h1></div>
+
+			<div class="wrapper">
+        <!--Only visible if an error button is pressed-->
+        <p id="error_status" class="statustext init">Press go to begin.</p>
+			  <button id="go" class="btn init" onmousedown="postToChat('show_led')">Go</button>
+
+        <!--Ask if the LED is lit-->
+				<p id="led_status" class="statustext led">Is the LED lit?</p>
+			  <button id="led_yes" class="btn led" onmousedown="postToChat('show_tlength')">Yes</button>
+			  <button id="led_no" class="btn led" onmousedown="postToChat('error')">No</button>
+
+        <!--Ask for simulation run length-->
+				<p id="time_status" class="statustext tlength">How long do you want to run the simulations for? (s)</p>
+        <select id="tlength_selector" class="selector tlength" onchange="hide(this.value);">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+				<button id="tlength_button" class="btn tlength" onmousedown="postToChat('tlength_submit')">Submit</button>
+				
+        <!--Ask how many mls are required-->
+				<p id="mlvol_status" class="statustext mlvol">How many mls do you have? (ml)</p>
+        <select id="mlvol_selector" class="selector mlvol" onchange="hide(this.value);">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+				<button id="mlvol_button" class="btn mlvol" onmousedown="postToChat('mlvol_submit')">Submit</button>
+
+        <!--Disply 'Go' button - notionally unneccesary, but forces the main_program run-->
+				<p id="main_program_status" class="statustext main">Click go to run program.</p>
+				<button id="main_program" class="btn main" onmousedown="postToChat('main_program')">Go</button>
+
+        <!--Ask if results are okay to proceed to the next step-->
+        <p id="voltavg_status" class="statustext results"></p>
+        <p id="mlplot_status" class="statustext results"></p>
+        <p id="vplot_status" class="statustext results"></p>
+        <p id="rerun_status" class="statustext results">Are you happy with the results?</p>
+				<button id="newtest" class="btn results" onmousedown="postToChat('results')">Yes</button>
+		    <button id="rerun" class="btn results" onmousedown="postToChat('error')">No</button>
+                
+        <!--Ask if another test is to be run-->
+        <p id="newtest_status" class="statustext proceed">Would you like to run another test?</p>
+				<button id="runagain" class="btn proceed" onmousedown="postToChat('proceed')">Yes</button>
+		    <button id="endprogram" class="btn proceed" onmousedown="postToChat('end_program')">No</button>
+
+        <!--Final ouput-->
+        <p id="final_output" class="statustext">Data stored in 'data' directory.</p>
+			</div>
+
+		</div>
+	</body>
+	<script src="scripts/main.js"></script>
+</html>

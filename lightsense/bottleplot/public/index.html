@@ -1,0 +1,261 @@
+<html>
+	<link rel="stylesheet" type="text/css" href="style.css">
+
+	<body>
+		<div id="headWrapper"><h1>Control Terminal</h1></div>
+
+			<div class="wrapper">
+        <!--Only visible if an error button is pressed-->
+        <p id="error_status" class="statustext">Press go to begin.</p>
+			  <button id="go" class="btn" onmousedown="postToChat(100)">Go</button>
+
+        <!--Ask if the LED is lit-->
+				<p id="led_status" class="statustext">Is the LED lit?</p>
+			  <button id="led_yes" class="btn" onmousedown="postToChat(1)">Yes</button>
+			  <button id="led_no" class="btn" onmousedown="postToChat(404)">No</button>
+
+        <!--Ask for simulation run length-->
+				<p id="time_status" class="statustext">How long do you want to run the simulations for? (s)</p>
+        <select id="tlength_selector" onchange="hide(this.value);">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+				<button id="tlength_button" class="btn" onmousedown="tlength_submit()">Submit</button>
+				
+        <!--Ask how many mls are required-->
+				<p id="mlvol_status" class="statustext">How many mls do you have? (ml)</p>
+        <select id="mlvol_selector" onchange="hide(this.value);">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+				<button id="mlvol_button" class="btn" onmousedown="mlvol_submit()">Submit</button>
+
+        <!--Disply 'Go' button - notionally unneccesary, but forces the main_program run-->
+				<p id="main_program_status" class="statustext">Click go to run program.</p>
+				<button id="main_program" class="btn" onmousedown="postToChat(4)">Go</button>
+
+        <!--Display image, if created-->
+        <img id="thist_img" src="interim.png" alt="Image Placeholder"/>
+
+        <!--Ask if results are okay to proceed to the next step-->
+        <p id="voltavg_status" class="statustext"></p>
+        <p id="rerun_status" class="statustext">Are you happy with the results?</p>
+				<button id="newtest" class="btn" onmousedown="postToChat(5)">Yes</button>
+		    <button id="rerun" class="btn" onmousedown="postToChat(404)">No</button>
+                
+        <!--Ask if another test is to be run-->
+        <p id="newtest_status" class="statustext">Would you like to run another test?</p>
+				<button id="runagain" class="btn" onmousedown="postToChat(6)">Yes</button>
+		    <button id="endprogram" class="btn" onmousedown="postToChat(101)">No</button>
+
+        <!--Final plot-->
+        <img id="final_plot" src="final_plot.png" alt="Image Placeholder"/>
+			</div>
+
+		</div>
+
+		<script type="text/javascript">
+
+      // *** initalise layout - set all to hidden *** 
+      //LED elements
+
+        // document.getElementsByClassName("statustext").style.visibility = "hidden"; 
+			document.getElementById("led_status").style.visibility = "hidden";
+      document.getElementById("led_yes").style.visibility = "hidden";
+      document.getElementById("led_no").style.visibility = "hidden";
+
+      //time question elements
+			document.getElementById("time_status").style.visibility = "hidden";
+      document.getElementById("tlength_selector").style.visibility = "hidden";
+      document.getElementById("tlength_button").style.visibility = "hidden";
+
+      //ml question elements
+			document.getElementById("mlvol_status").style.visibility = "hidden";
+      document.getElementById("mlvol_selector").style.visibility = "hidden";
+      document.getElementById("mlvol_button").style.visibility = "hidden";
+
+      //main program go button
+			document.getElementById("main_program_status").style.visibility = "hidden";
+      document.getElementById("main_program").style.visibility = "hidden";
+
+      //time history image
+			document.getElementById("thist_img").style.visibility = "hidden";
+
+      //main section - average statement and rerun question
+			document.getElementById("voltavg_status").style.visibility = "hidden";
+			document.getElementById("rerun_status").style.visibility = "hidden";
+      document.getElementById("newtest").style.visibility = "hidden";
+      document.getElementById("rerun").style.visibility = "hidden";
+
+      document.getElementById("newtest_status").style.visibility = "hidden";
+      document.getElementById("runagain").style.visibility = "hidden";
+			document.getElementById("endprogram").style.visibility = "hidden";
+
+      //final plot
+      document.getElementById("final_plot").style.visibility = "hidden";
+
+      //function to pick value from tlength selctor box
+      function tlength_submit() {
+          var x = document.getElementById("tlength_selector").value;
+
+          document.getElementById("time_status").style.visibility = "hidden";
+          document.getElementById("tlength_selector").style.visibility = "hidden";
+					document.getElementById("tlength_button").style.visibility = "hidden";
+          document.getElementById("mlvol_status").style.visibility = "visible";
+          document.getElementById("mlvol_selector").style.visibility = "visible";
+          document.getElementById("mlvol_button").style.visibility = "visible";                                                        
+          var url = `/get_tlength/${x}`;
+
+          //send url, including parameter, to python function
+          var oReq = new XMLHttpRequest();
+					oReq.addEventListener("load", getResponse);
+					oReq.open("GET", url);
+					oReq.send();
+      }
+
+      //function to pick value from mlvol selctor box
+      function mlvol_submit() {
+          var x = document.getElementById("mlvol_selector").value;
+
+          document.getElementById("mlvol_status").style.visibility = "hidden";
+          document.getElementById("mlvol_selector").style.visibility = "hidden";                                                           
+          document.getElementById("mlvol_button").style.visibility = "hidden"; 
+          document.getElementById("main_program_status").style.visibility = "visible";
+	        document.getElementById("main_program").style.visibility = "visible";                                                       
+          var url = `/get_mlvol/${x}`;
+
+          //send url, including parameter, to python function
+          var oReq = new XMLHttpRequest();
+					oReq.addEventListener("load", getResponse);
+					oReq.open("GET", url);
+					oReq.send();
+      }
+
+      // *** functions to get average voltage from main_program function ***
+      function voltavgResponse() {
+          document.getElementById("voltavg_status").innerHTML = "Average voltage: " + this.responseText + "V";
+      }   
+
+      function updatevoltavg() {
+          var httpRequest = new XMLHttpRequest();
+          httpRequest.addEventListener("load", voltavgResponse);
+          httpRequest.open("GET", "/main_program");
+          httpRequest.send();
+      }
+      
+      // *** function to get text to display - what does this actually do? ***
+      function getResponse() {
+	        document.getElementById("error_status").innerHTML = this.responseText;
+			}
+
+      // *** main section of javascript ***
+			function postToChat(value) {
+				var url;
+				switch(value) {
+
+         //this happens when the go button is clicked
+					case 100:						
+						document.getElementById("error_status").style.visibility = "hidden";  
+						document.getElementById("go").style.visibility = "hidden";  
+            document.getElementById("led_status").style.visibility = "visible";
+            document.getElementById("led_yes").style.visibility = "visible";
+		        document.getElementById("led_no").style.visibility = "visible";
+            url = "/led_toggle";
+						break;
+
+          //this happens when the LED button 'yes' is clicked
+					case 1:
+						document.getElementById("led_status").style.visibility = "hidden";
+            document.getElementById("led_yes").style.visibility = "hidden";
+		        document.getElementById("led_no").style.visibility = "hidden";
+						document.getElementById("time_status").style.visibility = "visible";  
+            document.getElementById("tlength_selector").style.visibility = "visible";
+						document.getElementById("tlength_button").style.visibility = "visible";  
+						break;
+
+          //this happens when the go button is clicked in main_program
+          case 4:
+        			document.getElementById("main_program_status").style.visibility = "hidden";
+			        document.getElementById("main_program").style.visibility = "hidden";
+
+        			document.getElementById("thist_img").style.visibility = "visible";
+			        document.getElementById("voltavg_status").style.visibility = "visible";
+			        document.getElementById("rerun_status").style.visibility = "visible";
+              document.getElementById("newtest").style.visibility = "visible";
+              document.getElementById("rerun").style.visibility = "visible";
+              url = "/main_program";
+              break;
+
+          //this happens when the button is clicked 'yes' in response to 'are you happy?'
+          case 5:
+        			document.getElementById("thist_img").style.visibility = "hidden";
+			        document.getElementById("voltavg_status").style.visibility = "hidden";
+			        document.getElementById("rerun_status").style.visibility = "hidden";
+              document.getElementById("newtest").style.visibility = "hidden";
+              document.getElementById("rerun").style.visibility = "hidden";
+
+              document.getElementById("newtest_status").style.visibility = "visible";
+              document.getElementById("runagain").style.visibility = "visible";
+              document.getElementById("endprogram").style.visibility = "visible";
+              break;
+
+          //this happens if there is to be another test run
+          case 6:
+              document.getElementById("newtest_status").style.visibility = "hidden";
+              document.getElementById("runagain").style.visibility = "hidden";
+              document.getElementById("endprogram").style.visibility = "hidden";
+
+              document.getElementById("mlvol_status").style.visibility = "visible";
+              document.getElementById("mlvol_selector").style.visibility = "visible";   
+              document.getElementById("mlvol_button").style.visibility = "visible";   
+              break;
+
+          //this happens when the program ends
+					case 101:
+            document.getElementById("newtest_status").style.visibility = "hidden";
+            document.getElementById("runagain").style.visibility = "hidden";
+            document.getElementById("endprogram").style.visibility = "hidden";
+
+            document.getElementById("final_plot").style.visibility = "visible";     
+            break;
+
+          //this happens when there is some sort of error
+					case 404:
+            document.getElementById("led_status").style.visibility = "hidden";
+            document.getElementById("led_yes").style.visibility = "hidden";
+		        document.getElementById("led_no").style.visibility = "hidden";
+
+						document.getElementById("thist_img").style.visibility = "hidden";
+		        document.getElementById("voltavg_status").style.visibility = "hidden";
+		        document.getElementById("rerun_status").style.visibility = "hidden";
+            document.getElementById("newtest").style.visibility = "hidden";
+            document.getElementById("rerun").style.visibility = "hidden"; 
+
+				    document.getElementById("error_status").style.visibility = "visible";  
+						document.getElementById("error_status").innerHTML = "Error. Please check your connections and restart the program! You can do this by refreshing the page.";  
+						break;
+				}
+								
+				if (url) {
+					var oReq = new XMLHttpRequest();
+					oReq.addEventListener("load", getResponse);
+					oReq.open("GET", url);
+					oReq.send();
+				}
+			}
+
+		</script>
+	</body>
+</html>
