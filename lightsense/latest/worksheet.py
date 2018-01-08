@@ -166,10 +166,25 @@ Read off the approximate value of `x` and record it.
 
 """)
 
-with open('inittest.py', 'r') as input_file:
+with open('/home/scott/dropchem/inittest.py', 'r') as input_file:
     input_string = input_file.read().replace('\n', '')
 
 markdown_string = markdown_string.replace('{ inittest.py }',input_string)
+
+with open('/home/scott/dropchem/rgblightsense.py', 'r') as input_file:
+    input_string = input_file.read().replace('\n', '')
+
+markdown_string = markdown_string.replace('{ rgblightsense.py }',input_string)
+
+with open('/home/scott/dropchem/plotresults.py', 'r') as input_file:
+    input_string = input_file.read().replace('\n', '')
+
+markdown_string = markdown_string.replace('{ plotresults.py }',input_string)
+
+with open('/home/scott/dropchem/plotcompare.py', 'r') as input_file:
+    input_string = input_file.read().replace('\n', '')
+
+markdown_string = markdown_string.replace('{ plotcompare.py }',input_string)
 
 html_string = markdown.markdown(markdown_string)
 
