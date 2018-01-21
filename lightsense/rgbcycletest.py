@@ -7,7 +7,7 @@ import time
 adc = MCP3208(channel=1)
 led = RGBLED(red=19,green=21,blue=26)
 
-secs = 0.05
+secs = 0.5
 voltarray = []
 voltavgarray = []
 countarray = []
@@ -17,9 +17,9 @@ nmax = 3*255-1
 
 for counter in range(nmax):
     led.color = (redval/255,greenval/255,blueval/255)
-    
+
     t_end = time.time() + secs
-    while time.time() < t_end:    
+    while time.time() < t_end:
         voltage = 3.3*adc.value
         voltarray.append(voltage)
 
@@ -27,7 +27,7 @@ for counter in range(nmax):
     countarray.append(counter)
     voltavgarray.append(voltavg)
     print('n = ' + str(counter) + ', vavg = ' + str(voltavg) + 'V')
-    
+
     if counter < 255:
         redval -= 1
         greenval += 1
@@ -48,4 +48,3 @@ plt.xlabel('n')
 plt.ylabel('V')
 plt.xlim(0,nmax)
 plt.show()
-    
