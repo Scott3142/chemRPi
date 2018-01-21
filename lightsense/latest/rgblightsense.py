@@ -1,5 +1,5 @@
 from gpiozero import MCP3208, RGBLED
-import time
+from time import *
 import numpy as np
 
 led = RGBLED(red=19,green=21,blue=26)
