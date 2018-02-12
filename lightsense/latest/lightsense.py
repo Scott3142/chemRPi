@@ -1,5 +1,7 @@
-lsfrom gpiozero import MCP3008, LED import time from time import 
-sleep import numpy as np
+from gpiozero import MCP3008, LED 
+import time 
+from time import sleep 
+import numpy as np
 
 led = LED(21)
 led.on()
