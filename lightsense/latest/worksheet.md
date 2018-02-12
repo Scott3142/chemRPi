@@ -1,14 +1,23 @@
-import markdown
-
-markdown_string = ("""
 ## Raspberry Pi Chemistry Project
 ### Worksheet 1
 
 **Contacts: Scott Morgan, Dan Baker, Emma Yhnell**
 
-#### The project:
+##### Outline:
 
-We will be developing code and building the structure for a Lego spectrophotometer, which we will use to conduct a simple experiment.
+You will be building a Lego **spectrophotometer**, which you will use to conduct a simple experiment. There will be four steps to the project:
+
+1. Build the structure using Lego.
+2. Build the circuit using a Raspberry Pi.
+3. Write the code to *collect* the data using Python.
+4. Conduct the experiment.
+5. Write the code to *analyse* the data using Python.
+
+##### The experiment:
+
+You have been provided with Irn-Bru - a popular soft drink, particularly in Scotland! The chemical that is responsible for Irn-Bru's distinctive colour is called Sunset Yellow FCF, and today we will be analysing Irn-Bru to work out how much Sunset Yellow it contains.
+
+To do this you will need to create a *calibration graph* - a common way of understanding the relationship between the concentration of a chemical and the response that an instrument gives. To do this - just run the 4 solutions provided, and record the responses on your spectrophotometer. Don't worry if this sounds confusing, you'll be walked through it later on in the practical booklet!
 
 #### Checking your kit:
 
